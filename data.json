@@ -1,0 +1,38 @@
+[
+  {
+    "id": "cf63f665-f0d6-4567-bc2c-0ef733a304ad",
+    "title": "Ceiling fan not working",
+    "category": "Electrical",
+    "priority": "High",
+    "location": "Block A - Room 204",
+    "description": "Fan stopped completely. Room gets very hot in the afternoon.",
+    "status": "Reported",
+    "votes": [],
+    "author": "Sample Student",
+    "createdAt": 1790673023087
+  },
+  {
+    "id": "bdae61ad-5996-47aa-8412-47e57027df0a",
+    "title": "Tap leaking in washroom",
+    "category": "Plumbing",
+    "priority": "Medium",
+    "location": "Library - Ground floor washroom",
+    "description": "Constant dripping from the second tap.",
+    "status": "In Progress",
+    "votes": [],
+    "author": "Sample Student",
+    "createdAt": 1790759423087
+  },
+  {
+    "id": "a742abad-1443-4d43-ae99-c30e61de56cd",
+    "title": "Broken desk in lab",
+    "category": "Furniture",
+    "priority": "Low",
+    "location": "CS Lab 2",
+    "description": "Desk leg is loose and wobbles.",
+    "status": "Resolved",
+    "votes": [],
+    "author": "Sample Student",
+    "createdAt": 1790413823087
+  }
+]

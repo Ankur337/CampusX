@@ -1,0 +1,18 @@
+[
+  {
+    "id": "35a93cd0-fc75-40ff-b791-a431189ef1b1",
+    "name": "Facilities Admin",
+    "email": "admin@campusx.local",
+    "salt": "0bffe272b6b6dfba6e2f20d95b984bc3",
+    "hash": "8607fbf678444fb085ea9a7ff92c824cae65ce59b4cba26317acb6fa5288bec8c732569f6bce7df174d74c2d18b21893ca138b4249f025ee348d44bce9874dec",
+    "role": "admin"
+  },
+  {
+    "id": "b5a9547d-2014-4a4d-bfc9-f28da4c3acf6",
+    "name": "Ankur",
+    "email": "ansfdf@gmail.com",
+    "salt": "d01d72ada86abc69edca500228e47ce3",
+    "hash": "fb0e4bb993c8230ec264adc95fa95f18c57f60f5e349e44ab2df3e7870350fee592e93e636102bbf8f25da3ffef99811af5068a20ccc48f84c3ce54f1de5a288",
+    "role": "student"
+  }
+]

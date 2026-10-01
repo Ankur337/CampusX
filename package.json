@@ -1,0 +1,8 @@
+{
+  "name": "campusx",
+  "version": "1.0.0",
+  "description": "Campus repair reporting board - BBDITM mini project",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=20" }
+}
