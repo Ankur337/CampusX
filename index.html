@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CampusX - Campus repair board</title>
+<style>
+:root{--ink:#17352f;--paper:#f2f5ef;--card:#fff;--line:#dbe3dc;--accent:#d4ed68;--accent-dark:#a8c83f;--muted:#66766e;--red:#bf4d3f;--blue:#287b89;--green:#287652;--shadow:0 12px 32px #193d2d0b}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 "Aptos","Segoe UI",sans-serif;background:radial-gradient(ellipse at 12% 0%,#e5eddf 0,transparent 38%),linear-gradient(90deg,#e9eee8 1px,transparent 1px),linear-gradient(#e9eee8 1px,transparent 1px),var(--paper);background-size:auto,28px 28px,28px 28px,auto;color:var(--ink)}
+header{background:#17352f;color:#f8fbf4;border-bottom:1px solid #ffffff20}
+.bar{max-width:1120px;margin:auto;padding:15px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-size:1.45rem;font-weight:800;letter-spacing:0}.brand b{color:var(--accent)}
+.sub{font-size:.82rem;color:#b8c9bf;flex:1}
+main{max-width:1120px;margin:auto;padding:36px 24px 72px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--line);background:var(--card);padding:9px 14px;border-radius:5px;transition:background .16s ease,border-color .16s ease,transform .16s ease}
+button:hover{border-color:#9aafa1}button:active{transform:translateY(1px)}
+button.primary{background:var(--accent);color:var(--ink);border-color:var(--accent);font-weight:750}
+button.primary:hover{background:#c7e455;border-color:#c7e455}
+.primary-link{display:inline-block;margin-top:4px;padding:10px 15px;border-radius:5px;background:var(--accent);color:var(--ink);font-weight:750;text-decoration:none}
+.primary-link:hover{background:#c7e455}
+button.ghost{background:transparent;color:#fff;border-color:#ffffff48}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #3f9296;outline-offset:2px}
+input,select,textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:5px;background:var(--card)}
+label{display:block;font-size:.83rem;font-weight:700;margin:12px 0 5px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:24px;box-shadow:var(--shadow)}
+.startup-error{max-width:640px;margin:52px auto;border-top:4px solid var(--accent-dark)}
+.startup-error h1{margin:0 0 8px;font:600 1.8rem/1.15 Georgia,serif}
+.startup-error p{color:var(--muted)}
+.startup-error code{padding:2px 5px;background:#edf2eb;border-radius:3px;color:var(--ink)}
+.auth{max-width:420px;margin:42px auto}
+.auth h2{margin:18px 0 8px;font:600 1.8rem/1.15 Georgia,serif}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:12px}.tabs button{border:0;border-radius:4px 4px 0 0;background:transparent;color:var(--muted)}.tabs button.on{background:var(--ink);color:white}
+.err{color:var(--red);min-height:1.4em;font-size:.9rem;margin:8px 0 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.board-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap;margin:4px 0 22px}
+.eyebrow{margin:0 0 7px;color:var(--green);font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.board-head h1{margin:0;font:600 2.25rem/1.1 Georgia,serif;letter-spacing:0}
+.board-note{margin:7px 0 0;color:var(--muted);font-size:.91rem}
+.tools{display:grid;grid-template-columns:minmax(220px,2fr) repeat(3,minmax(130px,1fr));gap:9px;margin:18px 0 14px;padding:12px;background:#e7ede5;border:1px solid #dce5da;border-radius:6px}
+.tools input{min-width:0}.tools select{min-width:0}
+.counts{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;margin:18px 0 0}
+.counts span{padding:7px 11px;background:var(--card);border:1px solid var(--line);border-radius:4px}.counts b{color:var(--ink);margin-left:3px}
+.report{display:grid;grid-template-columns:58px minmax(0,1fr) auto;gap:15px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--line);border-radius:6px;padding:16px 18px;margin-bottom:9px;box-shadow:var(--shadow);animation:arrive .28s ease both}
+.report.High{border-left-color:var(--red)}.report.Medium{border-left-color:#c5a935}.report.Low{border-left-color:var(--blue)}
+.vote{text-align:center;min-width:54px}
+.vote button{display:block;width:54px;padding:6px 0;font-weight:750;color:var(--green)}
+.vote button.on{background:var(--ink);color:var(--accent);border-color:var(--ink)}
+.vote small{color:var(--muted);font-size:.68rem}
+.report h3{margin:0 0 3px;font-size:1.04rem;line-height:1.3}
+.meta{font-size:.79rem;color:var(--muted);margin-bottom:8px}
+.report p{margin:0;color:#344c43;font-size:.92rem;overflow-wrap:anywhere}
+.badge{display:inline-block;padding:4px 9px;border-radius:3px;font-size:.74rem;font-weight:750;border:1px solid}
+.badge.Reported{color:var(--red);background:#fcf1ee;border-color:#f0d4ce}.badge.In\ Progress{color:#85691d;background:#faf6e8;border-color:#eadfb7}.badge.Resolved{color:var(--green);background:#edf6ef;border-color:#cfe3d3}
+.side{text-align:right;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.side select{width:auto;padding:5px 8px;font-size:.8rem}
+.empty{text-align:center;color:var(--muted);padding:54px 16px;background:#ffffffa8;border:1px dashed #c9d5ca;border-radius:6px}
+.hidden{display:none}
+dialog{border:1px solid var(--line);border-radius:7px;padding:24px;max-width:520px;width:92%;background:var(--card);color:var(--ink);box-shadow:0 24px 80px #10291d3b}
+dialog::backdrop{background:#10291d88;backdrop-filter:blur(2px)}
+dialog h2{font:600 1.7rem/1.2 Georgia,serif}
+.row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+.who{font-size:.87rem;color:#d0ddd3}
+@keyframes arrive{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:720px){main{padding:28px 18px 56px}.tools{grid-template-columns:repeat(2,minmax(0,1fr))}.tools input{grid-column:1/-1}}
+@media(max-width:520px){.bar{padding:13px 16px}.sub{flex-basis:100%;order:3}.board-head{align-items:flex-start}.board-head h1{font-size:1.9rem}.counts{margin-top:13px}.report{grid-template-columns:48px minmax(0,1fr);gap:11px;padding:14px 12px}.side{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center}.grid2{grid-template-columns:1fr}.tools{gap:7px;padding:9px}.tools select{font-size:.88rem}.auth{margin:24px auto}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand">Campus<b>X</b></div>
+  <div class="sub">Campus repair board &middot; BBDITM (student prototype)</div>
+  <div id="userbox" class="who hidden"><span id="who"></span> <button class="ghost" id="adminToggle">Admin sign in</button> <button class="ghost hidden" id="logout">Sign out</button></div>
+</div></header>
+
+<main>
+  <section id="startupError" class="panel startup-error hidden" role="alert">
+    <p class="eyebrow">CampusX server required</p>
+    <h1>The repair board couldn't connect.</h1>
+    <p>This page was opened through a static preview, which can't provide the sign-in and report services. Start the Node server with <code>node server.js</code>, then open the app here:</p>
+    <a class="primary-link" href="http://localhost:3000">Open CampusX</a>
+  </section>
+  <section id="authView" class="panel auth hidden">
+    <div class="tabs"><button id="tabIn" class="on" type="button">Sign in</button><button id="tabUp" type="button">Create account</button></div>
+    <h2 id="authTitle">Sign in</h2>
+    <div id="nameWrap" class="hidden"><label for="aName">Full name</label><input id="aName" autocomplete="name"></div>
+    <label for="aEmail">Email</label><input id="aEmail" type="email" autocomplete="email">
+    <label for="aPass">Password</label><input id="aPass" type="password" autocomplete="current-password">
+    <p class="err" id="authErr" role="alert"></p>
+    <button class="primary" id="authGo" style="width:100%">Sign in</button>
+    <p style="font-size:.8rem;color:var(--muted);margin-bottom:0">Facilities admin demo login: admin@campusx.local / admin123</p>
+  </section>
+
+  <section id="boardView" class="hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+      <div><p class="eyebrow">Facilities desk / live board</p><h1>Repair reports</h1><p class="board-note">Track campus issues and follow their progress.</p><div class="counts" id="counts"></div></div>
+      <button class="primary" id="newBtn">Report a problem</button>
+    </div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="Search by title, place or description" aria-label="Search reports">
+      <select id="fStatus" aria-label="Filter by status"><option value="">All statuses</option></select>
+      <select id="fCat" aria-label="Filter by category"><option value="">All categories</option></select>
+      <select id="fPri" aria-label="Filter by priority"><option value="">All priorities</option></select>
+    </div>
+    <div id="list"></div>
+  </section>
+</main>
+
+<dialog id="dlg">
+  <h2 style="margin-top:0">Report a problem</h2>
+  <label for="rTitle">Title</label><input id="rTitle" maxlength="80" placeholder="e.g. Projector not turning on">
+  <div class="grid2">
+    <div><label for="rCat">Category</label><select id="rCat"></select></div>
+    <div><label for="rPri">Priority</label><select id="rPri"></select></div>
+  </div>
+  <label for="rLoc">Location</label><input id="rLoc" list="places" maxlength="80" placeholder="Choose or type a place">
+  <datalist id="places">
+    <option>Block A - Classroom</option><option>Block B - Classroom</option><option>CS Lab</option><option>Library</option>
+    <option>Seminar Hall</option><option>Corridor</option><option>Washroom</option><option>Canteen</option><option>Hostel</option><option>Playground</option>
+  </datalist>
+  <label for="rDesc">Description</label><textarea id="rDesc" rows="4" maxlength="500" placeholder="What is wrong? Add the room number if you know it."></textarea>
+  <p class="err" id="rErr" role="alert"></p>
+  <div class="row"><button id="rCancel" type="button">Cancel</button><button class="primary" id="rSave" type="button">Submit report</button></div>
+</dialog>
+
+<script>
+const $ = id => document.getElementById(id);
+let me = null, meta = null, reports = [], mode = 'in', authOpen = false;
+
+async function call(method, url, body) {
+  const r = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(data.error || 'Something went wrong.');
+  return data;
+}
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const fill = (el, items, first) => { el.innerHTML = (first ? `<option value="">${first}</option>` : '') + items.map(i => `<option>${i}</option>`).join(''); };
+
+async function init() {
+  try {
+    meta = await call('GET', '/api/meta');
+    fill($('fStatus'), meta.STATUSES, 'All statuses');
+    fill($('fCat'), meta.CATEGORIES, 'All categories');
+    fill($('fPri'), meta.PRIORITIES, 'All priorities');
+    fill($('rCat'), meta.CATEGORIES); fill($('rPri'), meta.PRIORITIES); $('rPri').value = 'Medium';
+    me = await call('GET', '/api/me');
+    render();
+  } catch {
+    $('startupError').classList.remove('hidden');
+  }
+}
+
+function render() {
+  $('authView').classList.toggle('hidden', !authOpen || me?.role === 'admin');
+  $('boardView').classList.toggle('hidden', !me);
+  $('userbox').classList.toggle('hidden', !me);
+  if (me) {
+    $('who').textContent = me.role === 'guest' ? 'Guest access' : `${me.name} (${me.role === 'admin' ? 'Facilities admin' : 'Student'})`;
+    $('adminToggle').classList.toggle('hidden', me.role === 'admin');
+    $('adminToggle').textContent = authOpen ? 'Close sign in' : 'Admin sign in';
+    $('logout').classList.toggle('hidden', me.role === 'guest');
+    loadReports();
+  }
+}
+
+function setMode(m) {
+  mode = m; $('authErr').textContent = '';
+  $('tabIn').classList.toggle('on', m === 'in'); $('tabUp').classList.toggle('on', m === 'up');
+  $('nameWrap').classList.toggle('hidden', m === 'in');
+  $('authTitle').textContent = $('authGo').textContent = m === 'in' ? 'Sign in' : 'Create account';
+}
+$('tabIn').onclick = () => setMode('in'); $('tabUp').onclick = () => setMode('up');
+$('adminToggle').onclick = () => { authOpen = !authOpen; render(); };
+$('authGo').onclick = async () => {
+  try {
+    const body = { email: $('aEmail').value, password: $('aPass').value };
+    if (mode === 'up') body.name = $('aName').value;
+    me = await call('POST', mode === 'in' ? '/api/login' : '/api/register', body);
+    $('aPass').value = ''; authOpen = false; render();
+  } catch (e) { $('authErr').textContent = e.message; }
+};
+$('aPass').onkeydown = e => { if (e.key === 'Enter') $('authGo').click(); };
+$('logout').onclick = async () => { await call('POST', '/api/logout'); reports = []; authOpen = false; me = await call('GET', '/api/me'); render(); };
+
+async function loadReports() { try { reports = await call('GET', '/api/reports'); draw(); } catch (e) { me = null; render(); } }
+
+function draw() {
+  const q = $('q').value.toLowerCase(), s = $('fStatus').value, c = $('fCat').value, p = $('fPri').value;
+  const shown = reports.filter(r =>
+    (!s || r.status === s) && (!c || r.category === c) && (!p || r.priority === p) &&
+    (!q || [r.title, r.location, r.description].join(' ').toLowerCase().includes(q)));
+  $('counts').innerHTML = meta.STATUSES.map(x => `<span>${x}: <b>${reports.filter(r => r.status === x).length}</b></span>`).join('');
+  if (!shown.length) { $('list').innerHTML = `<div class="empty">${reports.length ? 'No reports match your search. Clear a filter to see more.' : 'No reports yet. Use "Report a problem" to add the first one.'}</div>`; return; }
+  $('list').innerHTML = shown.map(r => `
+    <article class="report ${r.priority}">
+      <div class="vote"><button data-vote="${r.id}" class="${r.voted ? 'on' : ''}" aria-label="Support this report">&#9650; ${r.votes}</button><small>${r.voted ? 'supported' : 'support'}</small></div>
+      <div>
+        <h3>${esc(r.title)}</h3>
+        <div class="meta">${esc(r.location)} &middot; ${esc(r.category)} &middot; ${esc(r.priority)} priority &middot; by ${esc(r.author)} on ${new Date(r.createdAt).toLocaleDateString()}</div>
+        <p>${esc(r.description)}</p>
+      </div>
+      <div class="side">
+        <span class="badge ${r.status}">${r.status}</span>
+        ${me.role === 'admin' ? `<select data-status="${r.id}" aria-label="Change status">${meta.STATUSES.map(x => `<option ${x === r.status ? 'selected' : ''}>${x}</option>`).join('')}</select>` : ''}
+      </div>
+    </article>`).join('');
+}
+['q', 'fStatus', 'fCat', 'fPri'].forEach(id => $(id).addEventListener('input', draw));
+
+function replace(r) { reports = reports.map(x => x.id === r.id ? r : x); draw(); }
+$('list').addEventListener('click', async e => {
+  const b = e.target.closest('[data-vote]'); if (!b) return;
+  try { replace(await call('POST', `/api/reports/${b.dataset.vote}/vote`)); } catch (er) { alert(er.message); }
+});
+$('list').addEventListener('change', async e => {
+  const id = e.target.dataset.status; if (!id) return;
+  try { replace(await call('PATCH', `/api/reports/${id}/status`, { status: e.target.value })); } catch (er) { alert(er.message); loadReports(); }
+});
+
+$('newBtn').onclick = () => { $('rErr').textContent = ''; $('dlg').showModal(); };
+$('rCancel').onclick = () => $('dlg').close();
+$('rSave').onclick = async () => {
+  try {
+    const r = await call('POST', '/api/reports', { title: $('rTitle').value, category: $('rCat').value, priority: $('rPri').value, location: $('rLoc').value, description: $('rDesc').value });
+    reports.unshift(r); ['rTitle', 'rLoc', 'rDesc'].forEach(id => $(id).value = ''); $('dlg').close(); draw();
+  } catch (e) { $('rErr').textContent = e.message; }
+};
+
+init();
+</script>
+</body>
+</html>
